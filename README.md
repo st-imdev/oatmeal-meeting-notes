@@ -5,8 +5,8 @@
 <h1 align="center">Oatmeal</h1>
 
 <p align="center">
-  Open-source AI meeting transcription for macOS.<br/>
-  Fully local. No bots. No cloud. No account.
+  Open-source, fully local alternative to <a href="https://granola.ai">Granola</a> for macOS.<br/>
+  AI meeting transcription — no bots, no cloud, no account.
 </p>
 
 <p align="center">
@@ -35,10 +35,6 @@ Oatmeal sits next to your call, transcribes both sides of the conversation in re
 ## Download
 
 Grab the latest DMG from the [Releases page](https://github.com/st-imdev/oatmeal-meeting-notes/releases/latest).
-
-Or build from source — see [Build](#build) below.
-
-## Quick start
 
 1. Open the DMG and drag Oatmeal to Applications
 2. Launch the app and grant **microphone** and **screen capture** permissions
@@ -78,54 +74,14 @@ The first launch downloads the speech model (~600 MB). After that, everything ru
 - **Transcripts stored locally** — saved to `~/Documents/Oatmeal/Meetings/` as plain files
 - **Hidden from screen sharing** — app windows are invisible to screen share by default during recording
 
-## What you need
+## Requirements
 
 - Apple Silicon Mac
 - macOS 15+
-- Xcode 16+ / Swift 6 (to build from source)
-
-## Build
-
-```bash
-# Clone the repo
-git clone https://github.com/st-imdev/oatmeal-meeting-notes.git
-cd oatmeal-meeting-notes
-
-# Open in Xcode
-open oatmeal.xcodeproj
-
-# Build and run (Cmd+R)
-```
-
-Xcode will resolve the FluidAudio dependency automatically via Swift Package Manager.
-
-To create a DMG for distribution:
-
-```bash
-# Archive in Xcode: Product → Archive → Distribute App → Direct Distribution → Export
-# Then:
-brew install create-dmg
-create-dmg --volname "Oatmeal" --app-drop-link 450 200 --icon "Oatmeal.app" 150 200 --window-size 600 400 "Oatmeal.dmg" /path/to/exported/Oatmeal.app
-```
-
-## Repo layout
-
-```
-oatmeal/
-├── App/                  Entry point and app model
-├── Models/               MeetingSession, TranscriptSegment
-├── Views/                SwiftUI views (ContentView)
-├── Services/             Recording, transcription, vault, export, API server
-└── Assets.xcassets/      App icon and colors
-assets/                   Source app icon
-Scripts/                  Build scripts
-```
 
 ## Credits
 
-Built on top of:
-- [FluidAudio](https://github.com/FluidInference/FluidAudio) — Parakeet-TDT ASR, Silero VAD, speaker diarization
-- Inspired by [OpenGranola](https://github.com/yazinsai/OpenGranola) and [Granola](https://granola.ai)
+Built on top of [FluidAudio](https://github.com/FluidInference/FluidAudio) — Parakeet-TDT ASR, Silero VAD, and speaker diarization. Inspired by [OpenGranola](https://github.com/yazinsai/OpenGranola) and [Granola](https://granola.ai).
 
 ## License
 
