@@ -6,14 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D246A90C2F69B6C3005A962F /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = FA0001022F700002005FA002 /* FluidAudio */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		D246A8282F699848005A962F /* openola.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = openola.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D246A8282F699848005A962F /* Oatmeal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oatmeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D246A82A2F699848005A962F /* openola */ = {
+		D246A82A2F699848005A962F /* oatmeal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = openola;
+			path = oatmeal;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D246A90C2F69B6C3005A962F /* FluidAudio in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +37,7 @@
 		D246A81F2F699848005A962F = {
 			isa = PBXGroup;
 			children = (
-				D246A82A2F699848005A962F /* openola */,
+				D246A82A2F699848005A962F /* oatmeal */,
 				D246A8292F699848005A962F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +45,7 @@
 		D246A8292F699848005A962F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D246A8282F699848005A962F /* openola.app */,
+				D246A8282F699848005A962F /* Oatmeal.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +53,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D246A8272F699848005A962F /* openola */ = {
+		D246A8272F699848005A962F /* oatmeal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D246A8332F699849005A962F /* Build configuration list for PBXNativeTarget "openola" */;
+			buildConfigurationList = D246A8332F699849005A962F /* Build configuration list for PBXNativeTarget "oatmeal" */;
 			buildPhases = (
 				D246A8242F699848005A962F /* Sources */,
 				D246A8252F699848005A962F /* Frameworks */,
@@ -61,13 +66,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D246A82A2F699848005A962F /* openola */,
+				D246A82A2F699848005A962F /* oatmeal */,
 			);
-			name = openola;
+			name = oatmeal;
 			packageProductDependencies = (
+				FA0001022F700002005FA002 /* FluidAudio */,
 			);
 			productName = openola;
-			productReference = D246A8282F699848005A962F /* openola.app */;
+			productReference = D246A8282F699848005A962F /* Oatmeal.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D246A8232F699848005A962F /* Build configuration list for PBXProject "openola" */;
+			buildConfigurationList = D246A8232F699848005A962F /* Build configuration list for PBXProject "oatmeal" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -94,12 +100,15 @@
 			);
 			mainGroup = D246A81F2F699848005A962F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA0001012F700001005FA001 /* XCRemoteSwiftPackageReference "FluidAudio" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D246A8292F699848005A962F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D246A8272F699848005A962F /* openola */,
+				D246A8272F699848005A962F /* oatmeal */,
 			);
 		};
 /* End PBXProject section */
@@ -250,30 +259,48 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J8Q7543C6W;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Oatmeal;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSAudioCaptureUsageDescription = "Oatmeal uses system audio capture to transcribe the people you hear on calls.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Oatmeal uses your microphone to transcribe meetings live on your Mac.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Oatmeal uses speech recognition to turn meeting audio into a live transcript.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.openola;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.oatmeal;
+				PRODUCT_NAME = Oatmeal;
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = YES;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = YES;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -282,37 +309,55 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J8Q7543C6W;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Oatmeal;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSAudioCaptureUsageDescription = "Oatmeal uses system audio capture to transcribe the people you hear on calls.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Oatmeal uses your microphone to transcribe meetings live on your Mac.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Oatmeal uses speech recognition to turn meeting audio into a live transcript.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.openola;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.oatmeal;
+				PRODUCT_NAME = Oatmeal;
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = YES;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = YES;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D246A8232F699848005A962F /* Build configuration list for PBXProject "openola" */ = {
+		D246A8232F699848005A962F /* Build configuration list for PBXProject "oatmeal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D246A8312F699849005A962F /* Debug */,
@@ -321,7 +366,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D246A8332F699849005A962F /* Build configuration list for PBXNativeTarget "openola" */ = {
+		D246A8332F699849005A962F /* Build configuration list for PBXNativeTarget "oatmeal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D246A8342F699849005A962F /* Debug */,
@@ -331,6 +376,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA0001012F700001005FA001 /* XCRemoteSwiftPackageReference "FluidAudio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FluidInference/FluidAudio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA0001022F700002005FA002 /* FluidAudio */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA0001012F700001005FA001 /* XCRemoteSwiftPackageReference "FluidAudio" */;
+			productName = FluidAudio;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D246A8202F699848005A962F /* Project object */;
 }
