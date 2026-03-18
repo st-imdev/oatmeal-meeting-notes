@@ -26,9 +26,12 @@ Oatmeal sits next to your call, transcribes both sides of the conversation in re
 - **Editable speaker names** — click any speaker label to rename it; set your own name once in Settings
 - **Invisible to the other side** — the app window is hidden from screen sharing by default, so no one knows you're using it
 - **Works with everything** — Zoom, Google Meet, Teams, Slack, or any app that plays audio through your Mac
+- **Meeting auto-detection** — Oatmeal monitors your mic for activity from other apps; when a call starts, you get a notification with a one-tap **Start Recording** button
+- **Pause & resume** — pause recording mid-meeting and pick back up, via toolbar button or `Cmd+P`
 - **AI-powered meeting notes** — optional summaries with key takeaways, action items, and next steps via OpenRouter (GPT-4o, Claude, Gemini, etc.)
 - **Meeting templates** — pre-built formats for general meetings, customer discovery, 1:1s, and interviews
 - **Auto-saved sessions** — every meeting is automatically saved as Markdown and JSON to a local vault
+- **Auto-updates** — checks for new versions automatically via Sparkle; also available under **Oatmeal > Check for Updates…**
 - **Local API** — built-in HTTP API for integrating with other tools
 - **100% local by default** — speech recognition runs entirely on your Mac; cloud LLM is optional and only used for post-meeting summaries if you configure it
 
@@ -42,7 +45,7 @@ Grab the latest DMG from the [Releases page](https://github.com/st-imdev/oatmeal
 4. Talk — the transcript builds live
 5. Click **Stop** when you're done
 
-The first launch downloads the speech model (~600 MB). After that, everything runs offline.
+The first launch downloads the speech model (~600 MB) in the background. The **Start Meeting** button enables once the model is ready. After that, everything runs offline.
 
 ### Optional: AI meeting notes
 
