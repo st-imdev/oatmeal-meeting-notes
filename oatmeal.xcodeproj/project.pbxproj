@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D246A90C2F69B6C3005A962F /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = FA0001022F700002005FA002 /* FluidAudio */; };
+		SP0001032F800003005FA003 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = SP0001022F800002005FA002 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D246A90C2F69B6C3005A962F /* FluidAudio in Frameworks */,
+				SP0001032F800003005FA003 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = oatmeal;
 			packageProductDependencies = (
 				FA0001022F700002005FA002 /* FluidAudio */,
+				SP0001022F800002005FA002 /* Sparkle */,
 			);
 			productName = openola;
 			productReference = D246A8282F699848005A962F /* Oatmeal.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FA0001012F700001005FA001 /* XCRemoteSwiftPackageReference "FluidAudio" */,
+				SP0001012F800001005FA001 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D246A8292F699848005A962F /* Products */;
@@ -263,7 +267,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = J8Q7543C6W;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -286,7 +290,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.oatmeal;
 				PRODUCT_NAME = Oatmeal;
 				REGISTER_APP_GROUPS = YES;
@@ -313,7 +317,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = J8Q7543C6W;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -336,7 +340,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = wonderwhat.oatmeal;
 				PRODUCT_NAME = Oatmeal;
 				REGISTER_APP_GROUPS = YES;
@@ -386,6 +390,14 @@
 				minimumVersion = 0.7.9;
 			};
 		};
+		SP0001012F800001005FA001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -393,6 +405,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA0001012F700001005FA001 /* XCRemoteSwiftPackageReference "FluidAudio" */;
 			productName = FluidAudio;
+		};
+		SP0001022F800002005FA002 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SP0001012F800001005FA001 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

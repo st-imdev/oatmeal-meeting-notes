@@ -1,6 +1,7 @@
 import AppKit
 import Combine
 import Foundation
+import UserNotifications
 
 enum PrivacySettingsDestination: Sendable {
     case microphone
@@ -78,6 +79,10 @@ final class OpenolaAppModel: ObservableObject {
     private let vault: MeetingVault
     private let recorder: any MeetingTranscriptionBackend = FluidAudioRecorder()
     private let apiServer: MeetingAPIServer
+    private(set) var meetingDetector: MeetingDetector?
+    let notificationDelegate = MeetingNotificationDelegate()
+    var isPaused: Bool { false }
+    var isModelReady: Bool { true }
 
     private var activeRecordingSessionID: MeetingSession.ID?
     private var recordingActivationToken = UUID()
@@ -141,6 +146,9 @@ final class OpenolaAppModel: ObservableObject {
             statusMessage = "Failed to create meeting."
         }
     }
+
+    func pauseMeeting() {}
+    func resumeMeeting() {}
 
     func finishMeeting() async {
         guard let activeRecordingSessionID else {
@@ -424,6 +432,23 @@ final class OpenolaAppModel: ObservableObject {
         }
 
         isBusy = false
+    }
+
+    private func startMeetingDetection() {
+        let detector = MeetingDetector { [weak self] in
+            self?.hasActiveMeeting ?? false
+        }
+
+        notificationDelegate.onStartRecording = { [weak self] in
+            guard let self, !self.hasActiveMeeting else { return }
+            Task {
+                await self.startFreshMeeting()
+            }
+        }
+
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+        detector.start()
+        meetingDetector = detector
     }
 
     @discardableResult

@@ -1,91 +1,110 @@
-<p align="center">
-  <img src="assets/appicon.png" width="128" height="128" alt="Oatmeal icon" />
-</p>
+# Openola
 
-<h1 align="center">Oatmeal</h1>
+Native macOS meeting capture app with a local file vault and a localhost API.
 
-<p align="center">
-  Open-source, fully local alternative to <a href="https://granola.ai">Granola</a> for macOS.<br/>
-  AI meeting transcription — no bots, no cloud, no account.
-</p>
+## Current product shape
 
-<p align="center">
-  <a href="https://github.com/st-imdev/oatmeal-meeting-notes/releases/latest">
-    <img src="https://img.shields.io/badge/Download-DMG-blue?style=for-the-badge" alt="Download DMG" />
-  </a>
-</p>
+- Native SwiftUI macOS app
+- Start a meeting, watch the transcript update live, finish the meeting, and keep the result in history
+- Meetings persisted as file bundles under `~/Documents/Openola/Meetings`
+- Each meeting bundle contains:
+  - `meeting.md`
+  - `transcript.md`
+  - `meta.json`
+  - `transcript.json`
+- Local HTTP API on `http://127.0.0.1:48567`
 
----
+## File layout
 
-Oatmeal sits next to your call, transcribes both sides of the conversation in real time, and saves everything as plain Markdown files you own and control. No audio ever leaves your Mac.
+```text
+~/Documents/Openola/
+  Meetings/
+    2026-03-17-1137-meeting-62ad6d00/
+      meeting.md
+      transcript.md
+      meta.json
+      transcript.json
+```
 
-## Features
+`meeting.md` is the human-readable note file. `meta.json` and `transcript.json` are the stable machine-readable files for agents and tools.
 
-- **Live transcription** — see both sides of the conversation as it happens, powered by [Parakeet-TDT](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2) running on Apple Neural Engine
-- **Speaker diarization** — automatically identifies who said what, with offline re-diarization when the meeting ends for improved accuracy
-- **Editable speaker names** — click any speaker label to rename it; set your own name once in Settings
-- **Invisible to the other side** — the app window is hidden from screen sharing by default, so no one knows you're using it
-- **Works with everything** — Zoom, Google Meet, Teams, Slack, or any app that plays audio through your Mac
-- **Meeting auto-detection** — Oatmeal monitors your mic for activity from other apps; when a call starts, you get a notification with a one-tap **Start Recording** button
-- **Pause & resume** — pause recording mid-meeting and pick back up, via toolbar button or `Cmd+P`
-- **AI-powered meeting notes** — optional summaries with key takeaways, action items, and next steps via OpenRouter (GPT-4o, Claude, Gemini, etc.)
-- **Meeting templates** — pre-built formats for general meetings, customer discovery, 1:1s, and interviews
-- **Auto-saved sessions** — every meeting is automatically saved as Markdown and JSON to a local vault
-- **Auto-updates** — checks for new versions automatically via Sparkle; also available under **Oatmeal > Check for Updates…**
-- **Local API** — built-in HTTP API for integrating with other tools
-- **100% local by default** — speech recognition runs entirely on your Mac; cloud LLM is optional and only used for post-meeting summaries if you configure it
+## API
 
-## Download
+The app starts a small local API when it launches.
 
-Grab the latest DMG from the [Releases page](https://github.com/st-imdev/oatmeal-meeting-notes/releases/latest).
+- `GET /health`
+- `GET /openapi.json`
+- `GET /meetings`
+- `GET /meetings/:id`
 
-1. Open the DMG and drag Oatmeal to Applications
-2. Launch the app and grant **microphone** and **screen capture** permissions
-3. Click **New Meeting** (or `Cmd+N`)
-4. Talk — the transcript builds live
-5. Click **Stop** when you're done
+Example:
 
-The first launch downloads the speech model (~600 MB) in the background. The **Start Meeting** button enables once the model is ready. After that, everything runs offline.
+```bash
+curl http://127.0.0.1:48567/meetings
+```
 
-### Optional: AI meeting notes
+## Build and run
 
-1. Open **Settings** (`Cmd+,`)
-2. Add your [OpenRouter](https://openrouter.ai/) API key
-3. After each meeting, Oatmeal generates a structured summary with headline, key takeaways, action items, and next steps
+Openola now lives in an Xcode macOS app project:
 
-### Optional: Set your name
+```bash
+cd /Users/scott/Desktop/Openola
+open openola.xcodeproj
+```
 
-1. Open **Settings** → **Your Name**
-2. Type your name — it replaces "Me" in all transcripts
+To build from the command line:
 
-## How it works
+```bash
+cd /Users/scott/Desktop/Openola
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+xcodebuild -project openola.xcodeproj -scheme openola -configuration Debug build
+```
 
-1. You start a meeting and click **New Meeting**
-2. Oatmeal captures your microphone and system audio simultaneously
-3. Speech is transcribed locally using Parakeet-TDT via [FluidAudio](https://github.com/FluidInference/FluidAudio)
-4. Voice Activity Detection (Silero VAD) segments speech from silence
-5. Speaker diarization identifies distinct speakers in system audio
-6. When you stop, a full-context re-diarization pass refines speaker labels
-7. Everything is saved as `meeting.md`, `transcript.md`, `transcript.json`, and `meta.json`
+To build a distributable app bundle into `dist/Openola.app`:
 
-## Privacy
+```bash
+cd /Users/scott/Desktop/Openola
+./Scripts/package-app.sh
+open dist/Openola.app
+```
 
-- **Audio never leaves your Mac** — transcription runs on-device via Apple Neural Engine
-- **No account required** — no sign-up, no login, no telemetry
-- **No bots join your calls** — Oatmeal captures system audio directly via ScreenCaptureKit
-- **API keys stored in Keychain** — OpenRouter key (if configured) is stored securely in macOS Keychain
-- **Transcripts stored locally** — saved to `~/Documents/Oatmeal/Meetings/` as plain files
-- **Hidden from screen sharing** — app windows are invisible to screen share by default during recording
+To install the built app into `/Applications`:
 
-## Requirements
+```bash
+cd /Users/scott/Desktop/Openola
+INSTALL_APP=1 ./Scripts/package-app.sh
+open /Applications/Openola.app
+```
 
-- Apple Silicon Mac
-- macOS 15+
+## Permissions
 
-## Credits
+The app needs:
 
-Built on top of [FluidAudio](https://github.com/FluidInference/FluidAudio) — Parakeet-TDT ASR, Silero VAD, and speaker diarization. Inspired by [OpenGranola](https://github.com/yazinsai/OpenGranola) and [Granola](https://granola.ai).
+- Microphone access
+- Speech Recognition access
+- Screen and system-audio capture access
 
-## License
+The prompts should appear when you start a live meeting.
 
-MIT
+## Why permissions can keep resetting
+
+macOS TCC permissions are tied to the app's code-signing identity, not just the bundle name. If you rebuild and repackage an ad-hoc signed app, the signing requirement changes and the OS may ask for permissions again.
+
+To make the permission choice stick:
+
+1. Keep the bundle identifier stable: `wonderwhat.openola`
+2. Sign with the same real identity every time
+3. Launch the installed app from a stable location like `/Applications/Openola.app`
+4. Rebuild over the same installed app instead of opening fresh debug copies
+
+## Current limits
+
+- Live transcription still uses Apple Speech, so this is not yet the local Whisper backend the product ultimately wants.
+- Speaker capture now uses ScreenCaptureKit, but it still is not guaranteed parity for every Zoom, Meet, or Slack setup.
+
+## Next sensible steps
+
+1. Swap Apple Speech for a local Whisper pipeline.
+2. Add a better capture path for remote call audio on macOS.
+3. Add write endpoints to the local API for agent-driven workflows.
+4. Clean up old template-era data and simplify the meeting model further.

@@ -222,11 +222,15 @@ private struct MeetingDetailView: View {
             .padding(.bottom, 14)
             .frame(maxWidth: .infinity, alignment: .top)
 
-            Divider()
+            // Thin separator — using a Rectangle instead of Divider() to avoid
+            // macOS rendering artifacts where Divider floats over scroll content.
+            Rectangle()
+                .fill(Color(nsColor: .separatorColor))
+                .frame(height: 1)
 
             // Scrollable transcript rows
             ScrollViewReader { proxy in
-                ScrollView {
+                ScrollView(.vertical) {
                     TranscriptBody(
                         session: session,
                         isActive: isActiveMeeting
@@ -236,6 +240,7 @@ private struct MeetingDetailView: View {
                     .padding(.vertical, 14)
                     .frame(maxWidth: .infinity, alignment: .top)
                 }
+                .background { ScrollViewVibrancyFix() }
                 .onChange(of: session.transcriptSegments.last?.id) { _, _ in
                     if let lastID = session.transcriptSegments.last?.id {
                         withAnimation(.easeOut(duration: 0.16)) {
@@ -434,7 +439,7 @@ private struct TranscriptBody: View {
                 .padding(.vertical, 4)
                 .textSelection(.enabled)
         } else {
-            LazyVStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 ForEach(segments) { segment in
                     TranscriptRow(
                         segment: segment,
@@ -554,6 +559,50 @@ private struct TranscriptRow: View {
                 return Self.speakerColors[index]
             }
             return .secondary.opacity(0.6)
+        }
+    }
+}
+
+// MARK: - macOS NSVisualEffectView fix
+//
+// macOS automatically inserts an NSVisualEffectView inside the NSScrollView
+// that backs SwiftUI's ScrollView in NavigationSplitView detail panes.
+// This renders as a translucent horizontal bar over transcript content.
+// The fix: embed an NSViewRepresentable inside the scroll view that walks
+// up to its parent NSScrollView and hides the vibrancy overlay.
+
+private struct ScrollViewVibrancyFix: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        view.frame = .zero
+        DispatchQueue.main.async { Self.hideVibrancy(from: view) }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        DispatchQueue.main.async { Self.hideVibrancy(from: nsView) }
+    }
+
+    private static func hideVibrancy(from view: NSView) {
+        // The NSVisualEffectView lives in the NSSplitView's titlebar area:
+        // NSTitlebarBackgroundView > NSScrollPocket > NSHardPocketView
+        //   > _NSScrollViewContentBackgroundView > NSVisualEffectView
+        // Walk up to the window and search the entire tree for it.
+        guard let contentView = view.window?.contentView else { return }
+        hideContentBackgroundVibrancy(in: contentView)
+    }
+
+    private static func hideContentBackgroundVibrancy(in view: NSView) {
+        let className = String(describing: type(of: view))
+        // Target both the backdrop view and the scroll content background view
+        if className == "NSHardPocketView"
+            || className == "BackdropView"
+            || className == "_NSScrollViewContentBackgroundView" {
+            view.isHidden = true
+            return
+        }
+        for sub in view.subviews {
+            hideContentBackgroundVibrancy(in: sub)
         }
     }
 }

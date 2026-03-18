@@ -682,6 +682,45 @@ final class SpeechRecorder: MeetingTranscriptionBackend, @unchecked Sendable {
         return cfString as String
     }
 
+    /// Returns the UID of the built-in microphone if the current default input
+    /// is a Bluetooth device. Bluetooth HFP mics (AirPods at 24kHz) cause
+    /// AVAudioEngine format mismatches. The built-in mic is more reliable and
+    /// higher quality for transcription. Returns nil if the default is already
+    /// a wired/built-in device.
+    static func builtInMicUIDIfDefaultIsBluetooth() -> String? {
+        guard let defaultID = defaultInputDeviceID() else { return nil }
+
+        let transportType = deviceTransportType(for: defaultID)
+        let btTypes: Set<UInt32> = [
+            0x626C7565, // kAudioDeviceTransportTypeBluetooth 'blue'
+            0x626C6532, // kAudioDeviceTransportTypeBluetoothLE 'ble2'
+        ]
+        guard btTypes.contains(transportType) else { return nil }
+
+        // Find the first non-Bluetooth device with input channels (built-in mic)
+        for id in allAudioDeviceIDs() {
+            let t = deviceTransportType(for: id)
+            if !btTypes.contains(t),
+               inputChannelCount(for: id) > 0,
+               let uid = deviceUID(for: id) {
+                return uid
+            }
+        }
+        return nil
+    }
+
+    private static func deviceTransportType(for deviceID: AudioObjectID) -> UInt32 {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyTransportType,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: AudioObjectPropertyElement(kAudioObjectPropertyElementMain)
+        )
+        var transportType: UInt32 = 0
+        var size = UInt32(MemoryLayout<UInt32>.size)
+        AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, &transportType)
+        return transportType
+    }
+
     private static func inputChannelCount(for deviceID: AudioObjectID) -> Int {
         var address = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyStreamConfiguration,

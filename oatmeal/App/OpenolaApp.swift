@@ -1,8 +1,26 @@
 import SwiftUI
+import Sparkle
+
+private final class SparkleDelegate: NSObject, SPUUpdaterDelegate {
+    func feedURLString(for updater: SPUUpdater) -> String? {
+        "https://raw.githubusercontent.com/st-imdev/oatmeal-meeting-notes/main/appcast.xml"
+    }
+}
 
 @main
 struct OpenolaApp: App {
     @StateObject private var model = OpenolaAppModel()
+    private let sparkleDelegate = SparkleDelegate()
+    private var updaterController: SPUStandardUpdaterController
+
+    init() {
+        let delegate = sparkleDelegate
+        updaterController = SPUStandardUpdaterController(
+            startingUpdater: false,
+            updaterDelegate: delegate,
+            userDriverDelegate: nil
+        )
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -13,6 +31,10 @@ struct OpenolaApp: App {
         .defaultSize(width: 940, height: 700)
         .windowToolbarStyle(.unified)
         .commands {
+            CommandGroup(after: .appInfo) {
+                CheckForUpdatesView(updater: updaterController.updater)
+            }
+
             CommandGroup(after: .newItem) {
                 Button("New Meeting") {
                     Task {
@@ -20,10 +42,22 @@ struct OpenolaApp: App {
                     }
                 }
                 .keyboardShortcut("n")
-                .disabled(model.isBusy || model.hasActiveMeeting)
+                .disabled(model.isBusy || model.hasActiveMeeting || !model.isModelReady)
             }
 
             CommandMenu("Meeting") {
+                Button(model.isPaused ? "Resume Recording" : "Pause Recording") {
+                    if model.isPaused {
+                        model.resumeMeeting()
+                    } else {
+                        model.pauseMeeting()
+                    }
+                }
+                .keyboardShortcut("p", modifiers: [.command])
+                .disabled(!model.hasActiveMeeting || (!model.isRecording && !model.isPaused))
+
+                Divider()
+
                 Button("Copy Transcript") {
                     model.copySelectedTranscript()
                 }

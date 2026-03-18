@@ -99,9 +99,31 @@ final class FluidAudioRecorder: MeetingTranscriptionBackend, @unchecked Sendable
         resetSessionState()
 
         // --- Microphone capture via AVAudioEngine ---
+        //
+        // IMPORTANT — Bluetooth HFP compatibility (AirPods etc.)
+        // -------------------------------------------------------
+        // DO NOT use `format: nil` in installTap(). Bluetooth HFP devices run
+        // at 24kHz but inputNode.outputFormat may report 48kHz, causing a
+        // silent format mismatch where the tap never fires.
+        //
+        // Instead, read the input node's format and build a standard PCM
+        // format with matching sample rate + channels. This lets AVAudioEngine
+        // handle any necessary conversion internally.
+        //
+        // This pattern is from OpenOats (github.com/yazinsai/OpenOats) and
+        // works reliably across built-in mics, USB, and Bluetooth devices.
+        // -------------------------------------------------------
         let engine = AVAudioEngine()
         let inputNode = engine.inputNode
-        try SpeechRecorder.route(inputNode: inputNode, toMicrophoneUID: preferredMicrophoneUID)
+
+        // Only explicitly route when the user selected a specific mic.
+        // For the system default, let AVAudioEngine handle device selection
+        // implicitly — explicitly routing to a Bluetooth default device
+        // via AudioUnitSetProperty can break HFP format negotiation.
+        if let uid = preferredMicrophoneUID {
+            try SpeechRecorder.route(inputNode: inputNode, toMicrophoneUID: uid)
+        }
+
         let micFormat = inputNode.outputFormat(forBus: 0)
 
         guard micFormat.sampleRate > 0 && micFormat.channelCount > 0 else {
@@ -114,10 +136,12 @@ final class FluidAudioRecorder: MeetingTranscriptionBackend, @unchecked Sendable
             self.micContinuation = continuation
         }
 
-        // Pass nil for format — lets AVAudioEngine use the hardware's native format.
-        // The StreamingTranscriber resamples everything to 16kHz mono anyway.
+        let tapFormat = AVAudioFormat(
+            standardFormatWithSampleRate: micFormat.sampleRate,
+            channels: micFormat.channelCount
+        )
         inputNode.removeTap(onBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 4096, format: nil) { buffer, _ in
+        inputNode.installTap(onBus: 0, bufferSize: 4096, format: tapFormat) { buffer, _ in
             self.micContinuation?.yield(buffer)
         }
 
