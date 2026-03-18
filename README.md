@@ -13,11 +13,17 @@
   <a href="https://github.com/st-imdev/oatmeal-meeting-notes/releases/latest">
     <img src="https://img.shields.io/badge/Download-DMG-blue?style=for-the-badge" alt="Download DMG" />
   </a>
+  &nbsp;
+  <a href="#cli">
+    <img src="https://img.shields.io/badge/brew_install-oatmeal-orange?style=for-the-badge" alt="brew install oatmeal" />
+  </a>
 </p>
 
 ---
 
 Oatmeal sits next to your call, transcribes both sides of the conversation in real time, and saves everything as plain Markdown files you own and control. No audio ever leaves your Mac.
+
+Use the **desktop app** for a full GUI experience, or the **CLI** to record, search, and export meetings from your terminal. Both share the same local vault.
 
 ## Features
 
@@ -33,9 +39,10 @@ Oatmeal sits next to your call, transcribes both sides of the conversation in re
 - **Auto-saved sessions** — every meeting is automatically saved as Markdown and JSON to a local vault
 - **Auto-updates** — checks for new versions automatically via Sparkle; also available under **Oatmeal > Check for Updates…**
 - **Local API** — built-in HTTP API for integrating with other tools
+- **CLI** — `brew install` and go — record, transcribe, search, and export from the terminal
 - **100% local by default** — speech recognition runs entirely on your Mac; cloud LLM is optional and only used for post-meeting summaries if you configure it
 
-## Download
+## Desktop App
 
 Grab the latest DMG from the [Releases page](https://github.com/st-imdev/oatmeal-meeting-notes/releases/latest).
 
@@ -58,9 +65,77 @@ The first launch downloads the speech model (~600 MB) in the background. The **S
 1. Open **Settings** → **Your Name**
 2. Type your name — it replaces "Me" in all transcripts
 
+## CLI
+
+Everything Oatmeal does, from your terminal. Record meetings, transcribe audio files, search past meetings, generate AI summaries, and pipe Markdown wherever you want.
+
+### Install
+
+```bash
+brew install st-imdev/oatmeal/oatmeal
+```
+
+<details>
+<summary>Or build from source</summary>
+
+```bash
+git clone https://github.com/st-imdev/oatmeal-meeting-notes.git
+cd oatmeal-meeting-notes
+swift build -c release
+cp .build/release/oatmeal /usr/local/bin/oatmeal
+```
+
+</details>
+
+### Quick start
+
+```bash
+oatmeal record          # start recording, Ctrl+C to stop
+oatmeal list            # see all your meetings
+oatmeal show "standup"  # print transcript by title
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `oatmeal list` | List all meetings |
+| `oatmeal show <id-or-title>` | Print a meeting transcript |
+| `oatmeal record [--mic <uid>]` | Record a live meeting (Ctrl+C to stop) |
+| `oatmeal transcribe <file>` | Transcribe an audio or video file |
+| `oatmeal export <id-or-title>` | Export meeting as Markdown to stdout |
+| `oatmeal delete <id-or-title> [-f]` | Delete a meeting |
+| `oatmeal mics` | List available microphones |
+| `oatmeal serve [--port N]` | Start the local API server |
+| `oatmeal summary <id-or-title>` | Generate or show AI summary |
+
+All commands accept `--vault <path>` to override the vault directory (default: `~/Documents/Oatmeal`).
+
+### Examples
+
+```bash
+# Pick a mic and start recording
+oatmeal mics
+oatmeal record --mic BuiltInMicrophoneDevice
+
+# Transcribe an existing recording
+oatmeal transcribe ~/Downloads/call.m4a
+
+# Pipe a transcript to a file
+oatmeal export "standup" > standup-notes.md
+
+# Generate an AI summary (uses Keychain key from GUI, or OPENROUTER_API_KEY env var)
+oatmeal summary "standup"
+
+# Spin up the API server
+oatmeal serve --port 8080
+```
+
+The CLI and the desktop app share the same vault — meetings created in either one show up in both.
+
 ## How it works
 
-1. You start a meeting and click **New Meeting**
+1. You start a meeting and click **New Meeting** (or run `oatmeal record`)
 2. Oatmeal captures your microphone and system audio simultaneously
 3. Speech is transcribed locally using Parakeet-TDT via [FluidAudio](https://github.com/FluidInference/FluidAudio)
 4. Voice Activity Detection (Silero VAD) segments speech from silence
@@ -80,7 +155,7 @@ The first launch downloads the speech model (~600 MB) in the background. The **S
 ## Requirements
 
 - Apple Silicon Mac
-- macOS 15+
+- macOS 14+
 
 ## Credits
 
