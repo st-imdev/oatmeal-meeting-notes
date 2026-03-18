@@ -3,5 +3,27 @@
     <channel>
         <title>Oatmeal Updates</title>
         <language>en</language>
+        <item>
+            <title>Oatmeal 1.1</title>
+            <description><![CDATA[
+                <h2>What's New in 1.1</h2>
+                <ul>
+                    <li><strong>Meeting Auto-Detection:</strong> Get notified when a call starts — tap to record instantly.</li>
+                    <li><strong>Pause &amp; Resume:</strong> Pause recording mid-meeting and pick back up.</li>
+                    <li><strong>Auto-Updates:</strong> Oatmeal now checks for updates automatically via Sparkle.</li>
+                    <li><strong>Background Model Loading:</strong> Speech models download on first launch instead of blocking your first meeting.</li>
+                    <li><strong>UI fixes:</strong> Sidebar layout fixed, auto-selects most recent meeting on launch.</li>
+                </ul>
+            ]]></description>
+            <pubDate>Tue, 18 Mar 2026 08:00:00 +0000</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/st-imdev/oatmeal-meeting-notes/releases/download/v1.1/Oatmeal-1.1.zip"
+                length="9195439"
+                type="application/octet-stream"
+            />
+        </item>
     </channel>
 </rss>
